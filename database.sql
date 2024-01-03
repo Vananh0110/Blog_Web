@@ -35,5 +35,5 @@ CREATE TABLE comments (
     content TEXT NOT NULL,
     createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
-    FOREIGN KEY (blog_id) REFERENCES blog(blog_id) ON DELETE CASCADE
+    FOREIGN KEY (blog_id) REFERENCES blogs(blog_id) ON DELETE CASCADE
 );
