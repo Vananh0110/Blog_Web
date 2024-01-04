@@ -13,7 +13,6 @@ CREATE TABLE users (
     user_name VARCHAR(50) NOT NULL,
     user_email VARCHAR(100) NOT NULL,
     user_password VARCHAR(255) NOT NULL,
-    google_id VARCHAR(255),
     CONSTRAINT unique_email UNIQUE (user_email)
 );
 
