@@ -2,7 +2,8 @@ const registerQuery = "INSERT INTO users (user_name, user_email, user_password) 
 
 const loginQuery = "SELECT * FROM users WHERE user_email = $1";
 
+const getUsersQuery = "SELECT * FROM users"
 
 module.exports = {
-    registerQuery, loginQuery
+    registerQuery, loginQuery, getUsersQuery
 }
