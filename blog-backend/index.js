@@ -2,6 +2,7 @@ const express = require('express');
 var cors = require('cors');
 const blogRoutes = require('./src/blog/routes');
 const userRoutes = require('./src/user/routes');
+const categoryRoutes = require('./src/category/routes');
 
 const app = express();
 const pool = require('./db');
@@ -12,7 +13,8 @@ app.use(express.json());
 app.use(cors());
 
 app.use('/blogs', blogRoutes);
-app.use('/auth', userRoutes)
+app.use('/auth', userRoutes);
+app.use('/categories', categoryRoutes);
 
 app.use('/', (req, res) => {
   res.send('Hello');
