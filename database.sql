@@ -16,14 +16,20 @@ CREATE TABLE users (
     CONSTRAINT unique_email UNIQUE (user_email)
 );
 
+CREATE TABLE categories (
+    category_id SERIAL PRIMARY KEY,
+    category_name VARCHAR(255) NOT NULL
+);
+
 CREATE TABLE blogs (
     blog_id SERIAL PRIMARY KEY,
     user_id INT,
     title VARCHAR(255) NOT NULL,
     content TEXT NOT NULL,
+    category_id INT,
     imageUrl VARCHAR(255),
-    videoUrl VARCHAR(255),
     createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (category_id) REFERENCES categories(category_id) ON DELETE CASCADE,
     FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
 );
 
