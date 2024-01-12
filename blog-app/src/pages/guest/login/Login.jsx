@@ -34,6 +34,15 @@ const Login = () => {
         user_email: email,
         user_password: password,
       });
+      
+      const userData = {
+        user_id: response.data.user.user_id,
+        user_name: response.data.user.user_name,
+        user_email: response.data.user.user_email,
+        avatar_url: response.data.user.avatar_url
+      };
+
+      sessionStorage.setItem('user', JSON.stringify(userData));
 
       setHasInputError(false);
       setLoginError(null);

@@ -1,62 +1,63 @@
-import React, { useState } from 'react';
-import axios from '../../../../api/axios';
+import React, { useEffect, useState } from 'react';
+import UserNavbar from '../../../../components/UserNavbar';
+import { useNavigate } from 'react-router-dom';
 import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css'; // Import styles
+import 'react-quill/dist/quill.snow.css';
 
 const CreateBlog = () => {
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
-  const [image, setImage] = useState(null);
+  const navigate = useNavigate();
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const [user, setUser] = useState(null);
 
-  const handleImageChange = (e) => {
-    setImage(e.target.files[0]);
-  };
+  useEffect(() => {
+    const storedUser = sessionStorage.getItem('user');
+    const parseUser = storedUser ? JSON.parse(storedUser) : null;
 
-  const handleTextChange = (value) => {
-    setContent(value);
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    const formData = new FormData();
-    formData.append('title', title);
-    formData.append('content', content);
-    formData.append('image', image);
-
-    try {
-      await axios.post('/create-blog', formData);
-      // Thực hiện các hành động sau khi đăng bài thành công, chẳng hạn chuyển hướng hoặc hiển thị thông báo
-    } catch (error) {
-      // Xử lý lỗi nếu có
+    if (!storedUser) {
+      setShowLoginModal(true);
     }
+
+    setUser(parseUser);
+  }, []);
+
+  const handleModalClose = () => {
+    setShowLoginModal(false);
+    navigate('/login');
   };
 
   return (
     <div>
-      <h1>Create Blog</h1>
-      <form onSubmit={handleSubmit}>
-        <label>
-          Title:
-          <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} />
-        </label>
-
-        <label>
-          Content:
-          <ReactQuill 
-            value={content} 
-            onChange={handleTextChange} 
-            modules={{ toolbar: [['bold', 'italic', 'underline', 'strike'], [{ 'align': [] }]] }} 
+      <UserNavbar user={user} />
+      <div className="container mx-auto my-8">
+        <div className="max-w-2xl mx-auto">
+          <label className="block text-lg font-semibold mb-2">
+            Blog Content
+          </label>
+          <ReactQuill
+            modules={{ toolbar: [['bold', 'italic', 'underline', 'link']] }}
+            placeholder="Write your blog here..."
           />
-        </label>
-
-        <label>
-          Image:
-          <input type="file" accept="image/*" onChange={handleImageChange} />
-        </label>
-
-        <button type="submit">Submit</button>
-      </form>
+        </div>
+      </div>
+      {showLoginModal && (
+        <div className="fixed top-0 left-0 w-screen h-screen flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white p-6 rounded-md shadow-md">
+            <p className="text-2xl font-bold mb-4">Login Required</p>
+            <p className="text-gray-700">
+              You need to log in to access the website. Please log in or create
+              an account.
+            </p>
+            <div className="flex justify-end">
+              <button
+                className="mt-4 bg-amber-400 px-3 py-2 text-sm font-semibold text-white rounded-md shadow-sm hover:bg-amber-300"
+                onClick={handleModalClose}
+              >
+                Log In
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
