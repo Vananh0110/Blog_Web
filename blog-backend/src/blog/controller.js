@@ -24,9 +24,9 @@ const deleteBlogById = (req, res) => {
 }
 
 const createBlog = (req, res) => {
-    const {user_id, title, content, category_id, imageUrl} = req.body;
+    const {user_id, title, description, information, category_id, imageUrl} = req.body;
 
-    pool.query(queries.createBlog, [user_id, title, content, category_id, imageUrl], (error, results) => {
+    pool.query(queries.createBlog, [user_id, title, description, information, category_id, imageUrl], (error, results) => {
         if (error) throw error;
         res.status(200).json(results.rows[0]);
     });
@@ -35,9 +35,9 @@ const createBlog = (req, res) => {
 
 const updateBlogById = (req, res) => {
     const id = req.params.id;
-    const {title, content, category_id, imageUrl} = req.body;
+    const {title, description, information, category_id, imageUrl} = req.body;
 
-    pool.query(queries.updateBlogById, [title, content, category_id, imageUrl, id], (error, results) => {
+    pool.query(queries.updateBlogById, [title, description, information, category_id, imageUrl, id], (error, results) => {
         if(error) throw error;
         res.status(200).send(`Blog was updated with id: ${id}`);
     })
